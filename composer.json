@@ -1,24 +1,27 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "elsayed85/laravel-github-copilot-chat",
+    "description": "This is my package laravel-github-copilot-chat",
     "keywords": [
-        ":vendor_name",
+        "elsayed85",
         "laravel",
-        ":package_slug"
+        "laravel-github-copilot-chat"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/elsayed85/laravel-github-copilot-chat",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "elsayed kamal",
+            "email": "elsayedkamal581999@gmail.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.1",
-        "spatie/laravel-package-tools": "^1.14.0",
-        "illuminate/contracts": "^10.0"
+        "guzzlehttp/guzzle": "^7.7",
+        "illuminate/contracts": "^10.0",
+        "laravel/prompts": "^0.1.5",
+        "phppkg/cli-markdown": "*",
+        "spatie/laravel-package-tools": "^1.14.0"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
@@ -35,19 +38,19 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "Elsayed85\\CopilotChat\\": "src/",
+            "Elsayed85\\CopilotChat\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/",
+            "Elsayed85\\CopilotChat\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-laravel-github-copilot-chat --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
             "@composer run prepare",
@@ -55,7 +58,7 @@
         ],
         "start": [
             "@composer run build",
-            "@php vendor/bin/testbench serve",
+            "@php vendor/bin/testbench serve"
         ],
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
@@ -72,10 +75,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "Elsayed85\\CopilotChat\\CopilotChatServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "CopilotChat": "Elsayed85\\CopilotChat\\Facades\\CopilotChat"
             }
         }
     },
