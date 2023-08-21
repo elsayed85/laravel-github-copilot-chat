@@ -5,6 +5,7 @@ namespace Elsayed85\CopilotChat;
 use Carbon\Carbon;
 use Elsayed85\CopilotChat\Core\CompletionRequest;
 use Elsayed85\CopilotChat\Core\Message;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 class CopilotChat
@@ -21,8 +22,8 @@ class CopilotChat
 
     public function __construct()
     {
-        $this->github_token = cache()->get('github_token');
-        $this->tokenExpiresAt = cache()->get('token_expires_at');
+        $this->github_token = Cache::get('github_token');
+        $this->tokenExpiresAt = Cache::get('token_expires_at');
 
         $this->rules = [
             "You are an AI assistant. it's okay if user asks for non-technical questions, you can answer them.",
@@ -108,10 +109,10 @@ class CopilotChat
             $this->token = $response['token'];
             $this->tokenExpiresAt = $response['expires_at'];
 
-            cache()->put('copilot_token', $this->token, $this->tokenExpiresAt);
-            cache()->put('token_expires_at', $this->tokenExpiresAt, $this->tokenExpiresAt);
+            Cache::put('copilot_token', $this->token, $this->tokenExpiresAt);
+            Cache::put('token_expires_at', $this->tokenExpiresAt, $this->tokenExpiresAt);
         } else {
-            $this->token = cache()->get('copilot_token');
+            $this->token = Cache::get('copilot_token');
         }
     }
 
@@ -189,7 +190,7 @@ class CopilotChat
 
     public function getGithubToken(): ?string
     {
-        return cache()->get('github_token');
+        return Cache::get('github_token');
     }
 
     public function getFinalString(string $data): string

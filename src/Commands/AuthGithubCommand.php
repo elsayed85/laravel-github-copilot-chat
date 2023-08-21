@@ -3,6 +3,7 @@
 namespace Elsayed85\CopilotChat\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 class AuthGithubCommand extends Command
@@ -38,8 +39,8 @@ class AuthGithubCommand extends Command
         $user_code = explode('=', $response[3])[1];
         $device_code = explode('=', $response[0])[1];
 
-        cache()->put('user_code', $user_code, 60 * 60 * 24);
-        cache()->put('device_code', $device_code, 60 * 60 * 24);
+        Cache::put('user_code', $user_code, 60 * 60 * 24);
+        Cache::put('device_code', $device_code, 60 * 60 * 24);
 
         $this->info('Got To https://github.com/login/device/ and enter the code: '.$user_code);
 

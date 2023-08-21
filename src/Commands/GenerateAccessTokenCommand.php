@@ -3,6 +3,7 @@
 namespace Elsayed85\CopilotChat\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 class GenerateAccessTokenCommand extends Command
@@ -26,7 +27,7 @@ class GenerateAccessTokenCommand extends Command
      */
     public function handle(): int
     {
-        $device_code = cache()->get('device_code');
+        $device_code = Cache::get('device_code');
 
         if (! $device_code) {
             $this->error('You need to run php artisan github:auth first and go to https://github.com/login/device/ and enter the code:');
@@ -48,9 +49,9 @@ class GenerateAccessTokenCommand extends Command
 
         $access_token = explode('=', $response[0])[1];
 
-        cache()->forever('github_token', $access_token);
-        cache()->forget('user_code');
-        cache()->forget('device_code');
+        Cache::forever('github_token', $access_token);
+        Cache::forget('user_code');
+        Cache::forget('device_code');
 
         $this->info('Your Github Token is: '.$access_token);
 

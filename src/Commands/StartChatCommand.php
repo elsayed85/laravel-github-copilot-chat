@@ -46,7 +46,6 @@ class StartChatCommand extends Command
         $this->info('Welcome to Copilot Chat');
 
         $this->info("
-
 /***
  *       _____  _  _    _             _        _____               _  _         _
  *      / ____|(_)| |  | |           | |      / ____|             (_)| |       | |
@@ -90,36 +89,27 @@ class StartChatCommand extends Command
         }
 
         $this->copilot->init();
+        $this->handelChating();
+        while (true) {
+            $this->handelChating();
+        }
 
+    }
+
+    private function handelChating(): void
+    {
         $message = $this->askForInput();
-
         if ($this->handelExit($message)) {
             return;
         }
-
         $response = $this->sendMessage($message);
-
-        //        $this->info('You: '.$message);
-        $this->info('Copilot: '.$response);
-        while (true) {
-            $message = $this->askForInput();
-
-            if ($this->handelExit($message)) {
-                return;
-            }
-
-            $response = $this->sendMessage($message);
-            //            $this->info('You: '.$message);
-            $this->info('Copilot: '.$response);
-
-        }
-
+        $this->getRender($response);
     }
 
     /**
      * @throws \Exception
      */
-    private function sendMessage($message): bool|string
+    private function sendMessage($message)
     {
         $response = $this->copilot->addMessage($message)->send();
 
@@ -131,8 +121,7 @@ class StartChatCommand extends Command
             return false;
         }
 
-        return $this->converter->render($text);
-
+        return $text;
     }
 
     private function confirmCodeAuth(): bool
@@ -169,5 +158,11 @@ class StartChatCommand extends Command
         }
 
         return false;
+    }
+
+    public function getRender($response): void
+    {
+        $text = $this->converter->render($response);
+        $this->line('Copilot: '.$text);
     }
 }
