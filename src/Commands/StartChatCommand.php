@@ -45,6 +45,20 @@ class StartChatCommand extends Command
     {
         $this->info('Welcome to Copilot Chat');
 
+        $this->info("
+
+/***
+ *       _____  _  _    _             _        _____               _  _         _
+ *      / ____|(_)| |  | |           | |      / ____|             (_)| |       | |
+ *     | |  __  _ | |_ | |__   _   _ | |__   | |      ___   _ __   _ | |  ___  | |_
+ *     | | |_ || || __|| '_ \ | | | || '_ \  | |     / _ \ | '_ \ | || | / _ \ | __|
+ *     | |__| || || |_ | | | || |_| || |_) | | |____| (_) || |_) || || || (_) || |_
+ *      \_____||_| \__||_| |_| \__,_||_.__/   \_____|\___/ | .__/ |_||_| \___/  \__|
+ *                                                         | |
+ *                                                         |_|
+ */
+");
+
         if (! $this->copilot->hasGithubToken()) {
             $this->error('Your Need to Authenticate with Github First');
             $check = $this->call('github:auth');
