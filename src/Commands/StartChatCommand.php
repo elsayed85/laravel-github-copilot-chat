@@ -41,9 +41,6 @@ class StartChatCommand extends Command
         $this->converter = new CliMarkdown();
     }
 
-    /**
-     * Execute the console command.
-     */
     public function handle(): void
     {
         $this->info('Welcome to Copilot Chat');
@@ -90,7 +87,6 @@ class StartChatCommand extends Command
 
         //        $this->info('You: '.$message);
         $this->info('Copilot: '.$response);
-
         while (true) {
             $message = $this->askForInput();
 
@@ -101,6 +97,7 @@ class StartChatCommand extends Command
             $response = $this->sendMessage($message);
             //            $this->info('You: '.$message);
             $this->info('Copilot: '.$response);
+
         }
 
     }
