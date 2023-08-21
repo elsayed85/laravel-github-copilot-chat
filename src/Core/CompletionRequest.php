@@ -5,10 +5,15 @@ namespace Elsayed85\CopilotChat\Core;
 class CompletionRequest
 {
     public bool $stream;
+
     public bool $intent;
+
     public string $model;
+
     public float $temperature;
+
     public int $top_p;
+
     public int $n;
 
     public function __construct(public array $messages)

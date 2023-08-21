@@ -2,9 +2,9 @@
 
 namespace Elsayed85\CopilotChat\Tests;
 
+use Elsayed85\CopilotChat\CopilotChatServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Elsayed85\CopilotChat\CopilotChatServiceProvider;
 
 class TestCase extends Orchestra
 {
