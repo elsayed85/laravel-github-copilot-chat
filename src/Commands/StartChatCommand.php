@@ -8,6 +8,7 @@ use PhpPkg\CliMarkdown\CliMarkdown;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\text;
+use function Laravel\Prompts\warning;
 
 class StartChatCommand extends Command
 {
@@ -27,11 +28,17 @@ class StartChatCommand extends Command
 
     protected $copilot;
 
+    protected $converter;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->copilot = new CopilotChat();
+
+        $config = [];
+
+        $this->converter = new CliMarkdown();
     }
 
     /**
@@ -51,10 +58,7 @@ class StartChatCommand extends Command
                 return;
             }
 
-            $codeConfirmed = confirm(
-                label: 'Do you entered the code successfully?',
-                default: true,
-            );
+            $codeConfirmed = $this->confirmCodeAuth();
 
             if (! $codeConfirmed) {
                 $this->error('You need to auth with Github first');
@@ -76,40 +80,83 @@ class StartChatCommand extends Command
 
         $this->copilot->init();
 
-        $message = text(
-            label: 'Type Your Message',
-            placeholder: 'Hi My Name is ',
-            required: true
-        );
+        $message = $this->askForInput();
+
+        if ($this->handelExit($message)) {
+            return;
+        }
 
         $response = $this->sendMessage($message);
 
-        $this->info('You: '.$message);
+        //        $this->info('You: '.$message);
         $this->info('Copilot: '.$response);
 
         while (true) {
-            $message = text(
-                label: 'Type Your Message',
-                placeholder: 'Hi My Name is ',
-                required: true
-            );
+            $message = $this->askForInput();
+
+            if ($this->handelExit($message)) {
+                return;
+            }
+
             $response = $this->sendMessage($message);
-            $this->info('You: '.$message);
+            //            $this->info('You: '.$message);
             $this->info('Copilot: '.$response);
         }
 
     }
 
-    private function sendMessage($message)
+    /**
+     * @throws \Exception
+     */
+    private function sendMessage($message): bool|string
     {
-        try {
-            $response = $this->copilot->addMessage($message)->send();
-            // convert markdown to html
-            return (new CliMarkdown())->render($response);
-        } catch (\Exception $e) {
-            $this->error($e->getMessage());
+        $response = $this->copilot->addMessage($message)->send();
+
+        $text = $response['text'];
+
+        if ($response['type'] == 'error') {
+            warning($text);
 
             return false;
         }
+
+        return $this->converter->render($text);
+
+    }
+
+    private function confirmCodeAuth(): bool
+    {
+        try {
+            return confirm(
+                label: 'Do you entered the code successfully?',
+                default: true,
+            );
+        } catch (\Exception) {
+            return $this->confirm('Do you entered the code successfully?', true);
+        }
+    }
+
+    private function askForInput(): string
+    {
+        try {
+            return text(
+                label: 'Type Your Message',
+                placeholder: 'message ...',
+                required: true
+            );
+        } catch (\Exception) {
+            return $this->ask('Type Your Message');
+        }
+    }
+
+    private function handelExit($message): bool
+    {
+        if ($message == 'exit') {
+            $this->info('Bye Bye');
+
+            return true;
+        }
+
+        return false;
     }
 }

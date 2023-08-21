@@ -1,10 +1,13 @@
 {
     "name": "elsayed85/laravel-github-copilot-chat",
-    "description": "This is my package laravel-github-copilot-chat",
+    "description": "A Laravel package to add a chatbot powered by GitHub Copilot to your Laravel application.",
     "keywords": [
         "elsayed85",
         "laravel",
-        "laravel-github-copilot-chat"
+        "github",
+        "copilot",
+        "chat",
+        "bot"
     ],
     "homepage": "https://github.com/elsayed85/laravel-github-copilot-chat",
     "license": "MIT",
@@ -20,6 +23,7 @@
         "guzzlehttp/guzzle": "^7.7",
         "illuminate/contracts": "^10.0",
         "laravel/prompts": "^0.1.5",
+        "league/commonmark": "^2.4",
         "phppkg/cli-markdown": "*",
         "spatie/laravel-package-tools": "^1.14.0"
     },
@@ -33,19 +37,16 @@
         "pestphp/pest-plugin-laravel": "^2.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0",
-        "spatie/laravel-ray": "^1.26"
+        "phpstan/phpstan-phpunit": "^1.0"
     },
     "autoload": {
         "psr-4": {
-            "Elsayed85\\CopilotChat\\": "src/",
-            "Elsayed85\\CopilotChat\\Database\\Factories\\": "database/factories/"
+            "Elsayed85\\CopilotChat\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Elsayed85\\CopilotChat\\Tests\\": "tests/",
-            "Workbench\\App\\": "workbench/app/"
+            "Elsayed85\\CopilotChat\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -53,8 +54,7 @@
         "clear": "@php vendor/bin/testbench package:purge-laravel-github-copilot-chat --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
-            "@composer run prepare",
-            "@php vendor/bin/testbench workbench:build --ansi"
+            "@composer run prepare"
         ],
         "start": [
             "@composer run build",

@@ -48,7 +48,9 @@ class GenerateAccessTokenCommand extends Command
 
         $access_token = explode('=', $response[0])[1];
 
-        cache()->put('github_token', $access_token, 60 * 60 * 24);
+        cache()->forever('github_token', $access_token);
+        cache()->forget('user_code');
+        cache()->forget('device_code');
 
         $this->info('Your Github Token is: '.$access_token);
 
