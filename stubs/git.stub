@@ -1,0 +1,117 @@
+Suggest git commands based on natural language queries.
+The user may revise their query, and an updated answer will be provided.
+Below 'Q' is followed by a question, 'A' by an answer, and 'R' follwed by a revision to the query.
+
+Q:
+    switch branch
+A:
+    git switch <branch>
+R:
+    main
+A:
+    git switch main
+---
+Q:
+    Delete a branch
+A:
+    git branch -d <branch>
+R:
+    branch new-feature
+A:
+    git branch -d new-feature
+---
+Q:
+    Switch to the previous branch
+A:
+    git switch -
+---
+Q:
+    find commit messages with the word security
+A:
+    git log --grep="security" --oneline
+R:
+    by user johnDoe177
+A:
+    git log --grep="security" --author="johnDoe177" --oneline
+---
+Q:
+    undo changes
+A:
+    git restore <file or tree>
+R:
+    to before I added the new feature
+A:
+    @DONTKNOW@
+R:
+    to before the last change to src/engine.ts
+A:
+    COMMIT_HASH=$(git log --oneline src/engine.ts | tail -n 1 | cut -d ' ' -f 1)
+    git checkout $COMMIT_HASH
+---
+Q:
+    find security fixes
+A:
+    @DONTKNOW@
+R:
+    commits with security in the message
+A:
+    git log --grep="security" --oneline
+R:
+    csv formatted as sha,author,date
+A:
+    git log --grep="security" --pretty=format:"%h,%an,%ad" --date=short
+---
+Q:
+    What changes were made by taylorotwell?
+A:
+    git log -p --author=taylorotwell *
+---
+Q:
+    Move the latest commit to new branch "new-feature"
+A:
+    git branch new-feature
+    git reset --hard HEAD~1
+    git switch new-feature
+R:
+    Move the last two commits
+A:
+    git branch new-feature
+    git reset --hard HEAD~2
+    git switch new-feature
+---
+Q:
+    untangle my mess
+A:
+    @DONTKNOW@
+R:
+    find the commit that broke the build
+A:
+    git bisect start
+---
+Q:
+    push and overwrite
+A:
+    git push --force-with-lease
+---
+Q:
+    Throw away all my local changes
+A:
+    git restore .
+---
+Q:
+    rebase onto "prev-feature"
+A:
+    git rebase prev-feature
+R:
+    previously rebased before commit a2b3c4
+A:
+    git rebase --onto prev-feature a2b3c4
+---
+Q:
+    Commits made by KaiserSoze404 if the commit touches src/index.ts
+A:
+    git log -p --author=KaiserSoze404 --oneline -- src/index.ts
+---
+Q:
+    __USER__QUESTION__
+A:

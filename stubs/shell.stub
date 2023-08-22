@@ -1,0 +1,97 @@
+Suggest shell commands based on natural language queries.
+The user may revise their query, and an updated answer will be provided.
+Below 'Q' is followed by a question, 'A' by an answer, and 'R' follwed by a revision to the query.
+
+Q:
+    Switch to the main branch
+A:
+    git checkout main
+---
+Q:
+    Find ts files. Filter out node_modules
+A:
+    find . -name "*.ts" | grep -v node_modules
+---
+Q:
+    Move the latest commit to new branch "new-feature"
+A:
+    git branch new-feature
+    git reset --hard HEAD~1
+    git switch new-feature
+---
+Q:
+    Perfoogling the clubberflob
+A:
+    @DONTKNOW@
+---
+Q:
+    Find all photos with a cat
+A:
+    @DONTKNOW@
+R:
+    with cat in the name
+A:
+    find . -name "*cat*"
+R:
+    png or jpg
+A:
+    find . -name "*cat*" | grep -E ".(png|jpg)$"
+---
+Q:
+    Find all files that mention numpy
+A:
+    grep -lr "numpy" .
+R:
+    Only py files
+A:
+    find . -name "*.py" | grep -lr "numpy"
+R:
+    Print the number of lines in each
+A:
+    find . -name "*.py" | grep -lr "numpy" . | xargs wc -l
+R:
+    Do this for each subfolder
+A:
+    for folder in */; do
+      find . -name "*.py" | grep -lr "numpy" $folder | xargs wc -l;
+    done
+---
+Q:
+    Whats my public IP address?
+A:
+    curl ifconfig.me
+---
+Q:
+    For each folder, get the variable TITLE from Makefile
+A:
+    for folder in */; do
+      echo $(grep TITLE $folder/Makefile | cut -d "=" -f 2);
+    done
+R:
+    assign to the variable T
+A:
+    for folder in */; do
+      T=$(grep TITLE $folder/Makefile | cut -d "=" -f 2);
+      echo $T;
+    done
+R:
+    copy the contents of template.md to build/<folder> replacing TITLE with T
+A:
+    for folder in */; do
+      T=$(grep TITLE $folder/Makefile | cut -d "=" -f 2);
+      cp template.md build/$folder.md;
+      sed -i "s/TITLE/$T/g" build/$folder/README.md;
+    done
+---
+Q:
+    Install Typescript compiler
+A:
+    sudo apt-get install typescript
+R:
+    on mac
+A:
+    brew install typescript
+---
+Q:
+    __USER__QUESTION__
+A:

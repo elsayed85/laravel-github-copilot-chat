@@ -1,0 +1,100 @@
+Suggest GitHub CLI commands based on natural language queries.
+The user may revise their query, and an updated answer will be provided.
+Below 'Q' is followed by a question, 'A' by an answer, and 'R' follwed by a revision to the query.
+
+Q:
+    list issues
+A:
+    gh issue list
+R:
+    all
+A:
+    gh issue list -L 10000
+---
+Q:
+    issues for tailwindlabs/tailwindcss
+A:
+    gh issue list -R tailwindlabs/tailwindcss
+---
+Q:
+    users who have created issues as json
+A:
+    gh issue list --state="all" -L 10000 --json author
+---
+Q:
+    default branch on jquense/yup
+A:
+    gh api repos/jquense/yup | jq .default_branch
+---
+Q:
+    the message of the most recent commit on jquense/yup
+A:
+    gh api repos/jquense/yup/commits --jq 'sort_by(.commit.author.date) | last | .commit.message'
+---
+Q:
+    the message of the most recent commit
+A:
+    CUR_REPO_NWO=$(gh repo view --json nameWithOwner --jq '.nameWithOwner') gh api repos/$CUR_REPO_NWO/commits --jq 'sort_by(.commit.author.date) | last | .commit.message'
+---
+Q:
+    pull requests in microsoft/vscode
+A:
+    gh pr list -R microsoft/vscode
+R:
+    title and status, sorted by title
+A:
+    gh pr list -R microsoft/vscode --json title,state --jq 'sort_by(.title)'
+R:
+    printed human readable
+A:
+    gh pr list -R microsoft/vscode --json title,state --jq 'sort_by(.title) | map(.title + " " + .state) | .[]'
+---
+Q:
+    get a list of all tflint-ruleset repos
+A:
+    gh api search/repositories -X GET -f q="tflint-ruleset" --jq '.items | map(.full_name) | .[]'
+---
+Q:
+    Perfoogling the clubberflob
+A:
+    @DONTKNOW@
+---
+Q:
+    Fix all the bugs on my PR
+A:
+    @DONTKNOW@
+---
+Q:
+    title and last modified date of all pull requests in tailwindlabs/tailwind-css as json
+A:
+    gh pr list -R tailwindlabs/tailwind-css -L 10000 --json title,updatedAt
+---
+Q:
+    all my PRs
+A:
+    gh pr list --author="@me"
+R:
+    those I have to review
+A:
+    gh pr list -S "user-review-requested:@me"
+R:
+    in any repo
+A:
+    gh api search/issues -X GET -f q="is:pr is:open review-requested:@me" --jq '.items | map({repo: .repository_url | split("/") | (.[-2] + "/" + .[-1]), title: .title}) | .[]'
+---
+Q:
+    closed issues for this repo
+A:
+    gh issue list --state="closed"
+R:
+    in the last week
+A:
+    LASTWEEK=$(date -I -d "7 days ago") gh issue list -L 10000 --state="closed" --json number,title,closedAt --jq '.[] | select(.closedAt > "$LASTWEEK")
+R:
+    sorted
+A:
+    LASTWEEK=$(date -I -d "7 days ago") gh issue list -L 10000 --state="closed" --json closedAt,number,title --jq '.[] | select(.closedAt > "$LASTWEEK")' | sort
+---
+Q:
+    __USER__QUESTION__
+A:

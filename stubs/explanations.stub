@@ -1,0 +1,107 @@
+Structured and complete explanations of shell commands.
+We follow the commands piece-by-piece in bullet-point form, with multiple statements being separate bullets.
+Sub-commands form sub-bullets.
+All flags are explained as sub-bullets.
+
+Q:
+    find -name "*.ts" | grep -v node_modules
+A:
+    * `find` is used to list files.
+      * `-name "*.ts"` stipulates that we search for files ending in `.ts`.
+    * `| grep` means we pass that list of files to `grep` which filters the list.
+      * `-v node_modules` means we exclude all files containing node_modules in its path.
+---
+Q:
+    sudo apt-get install typescript
+A:
+    * `sudo` is used to run a command with elevated rights, to e.g. change system files.
+      * `apt-get` is the Ubuntu package manager.
+        * `install typescript` directs it to install the `typescript` package.
+---
+Q:
+    for file in $(find -name "*.py"); do
+      echo "$file";
+      wc -l $file;
+    done
+A:
+    * The for loop iterates over a list of items and executes its body for each, using the loop variable `$file`.
+      * The list of items is the output of a sub-call to `find` which is used to list files.
+        * `-name "*.py"` stipulates that we search for files ending in `.py`.
+    * The loop body executes two commands for each file:
+      * `echo "$file"` will print the name of the current file to the terminal.
+      * `wc` is used to count the number of lines in the current file.
+        * `-l` specifies that we only want the line count, not the word or character count.
+---
+Q:
+    for folder in */; do
+      grep -lr "import numpy" $folder | wc -l;
+    done
+A:
+    * The for loop iterates over a list of items and executes its body for each, using the loop variable `$folder`.
+      * The list of items is `*/` which means all folders in the current directory.
+    * The loop body executes one command for each file:
+      * `echo "$folder"` will print the name of the current folder to the terminal.
+      * `grep ... | wc -l` prints the number of files in the current folder that contain the string `import numpy`.
+        * `grep` is used to search for a pattern in a file.
+          * `-l` means we only want the file names, not the lines that contain the pattern.
+          * `-r` means we search recursively in the current folder and all sub-folders.
+          * `"import numpy"` is the pattern we search for.
+          * `$folder` is the folder we search in.
+        * | `wc` inputs the list of files from `grep` and counts the number of lines, i.e. the number of files.
+          * `-l` specifies that we only want the line count, not the word or character count.
+---
+Q:
+    git branch new-feature
+    git reset --hard HEAD~1
+    git switch new-feature
+A:
+    * `git branch new-feature` creates a new branch called `new-feature`.
+    * `git reset` resets the current branch to a previous commit.
+      * `--hard` means that we also discard any changes made to the files in the working directory.
+      * `HEAD~1` specifies that we reset to the commit one before the current one.
+    * `git switch new-feature` switches to the `new-feature` branch.
+---
+Q:
+    T=$(grep TITLE $folder/Makefile | cut -d "=" -f 2);
+A:
+    * `T=$(...)` is used to assign the output of the command inside `$(...)` to the variable `T`.
+      * `grep TITLE $folder/Makefile` searches for the line containing `TITLE` in the `Makefile` of the current folder.
+      * | `cut -d "=" -f 2` takes this line, splits it at the `=` character and returns the second part.
+---
+Q:
+    gh api search/issues -X GET -f q="is:pr is:open review-requested:@me" --jq '.items | map({repo: .repository_url | split("/") | (.[-2] + "/" + .[-1]), title: .title}) | .[]'
+A:
+    * `gh api` is used to issue GitHub API requests.
+      * `search/issues` specifies that we want to search for issues or PRs.
+      * `-X GET` specifies that we want to use the GET method.
+      * `-f q="..." specifies the query to search for.
+        * `is:pr` specifies that we want to search for PRs.
+        * `is:open` specifies that we want to search for open PRs.
+        * `review-requested:@me` specifies that we want to search for PRs where we are requested for review.
+      * `--jq` uses the `jq` tool to process the response using a series of filters.
+        * `.items` selects the list of items in the response.
+        * `| map(...)` builds a new object for each item in the list with the following elements.
+          * `repo` build from the existing `repository_url` field.
+            * `split("/")` splits the URL into a list of strings, e.g. `["https:", "", "github.com", "microsoft", "vscode"]`.
+            * `(.[-2] + "/" + .[-1])` selects the last two elements of the list and concatenates them with a `/` in between.
+          * `title` is taken from the existing `title` field.
+        * `| .[]` selects the first element of the list.
+---
+Q:
+    ls -lart
+A:
+    * `ls` is used to list files.
+      * `-l` specifies that we want a long listing.
+      * `-a` specifies that we want to include hidden files.
+      * `-r` specifies that we want to reverse the order of the listing.
+      * `-t` specifies that we want to sort the listing by modification time.
+---
+Q:
+    curl ifconfig.me
+A:
+    * `curl` is used to issue web requests, e.g. download web pages.
+      * `ifconfig.me` is a web service that returns the public IP address of the requestor.
+---
+Q:
+    __USER__QUESTION__
+A:
