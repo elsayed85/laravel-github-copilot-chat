@@ -67,8 +67,6 @@ To use github-copilot-cli
 
 A CLI experience for letting GitHub Copilot help you on the command line.
 
-NOTE: GitHub Copilot CLI is in technical preview. Expect rough corners and poorly supported platforms. To get access to GitHub Copilot CLI, sign up on the waitlist.
-
 GitHub Copilot CLI translates natural language into shell commands, with modes for different domains. After installation, you can use the following three command:
 
 ```php
@@ -78,8 +76,9 @@ $cli = new CopilotCli();
 $q = "install laravel";
 $cli = $cli->init();
 $cli->setQuestion($q);
-$a = $cli->shell()->getAnswer(); // you can use shell() or git() or gitCli()
-$explanation = $cli->explanation()->getAnswer();
+$a = $cli->shell(); // you can use shell() or git() or gitCli()
+// call explanation() after shell() or git() or gitCli() to get explanation of the generated cli command
+$explanation = $cli->explanation();
 dd($a , $explanation);
 ```
 

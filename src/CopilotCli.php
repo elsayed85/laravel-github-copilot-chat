@@ -148,14 +148,14 @@ class CopilotCli
         return $this;
     }
 
-    private function suggest($key): static
+    private function suggest($key): string
     {
-        return $this->setMaxTokens(self::MAX_TOKENS_SUGGEST_COMMAND)->addAnotherStop('\nR:\n')->query($key);
+        return $this->setMaxTokens(self::MAX_TOKENS_SUGGEST_COMMAND)->addAnotherStop('\nR:\n')->query($key)->getAnswer();
     }
 
-    public function explanation(): static
+    public function explanation(): string
     {
-        return $this->setMaxTokens(self::MAX_TOKENS_STRUCTURE_COMMAND)->query('explanations');
+        return $this->setMaxTokens(self::MAX_TOKENS_STRUCTURE_COMMAND)->query('explanations')->getAnswer();
     }
 
     private function getPrompt($key): string
@@ -167,17 +167,17 @@ class CopilotCli
         return str_replace('__USER__QUESTION__', $question, $content);
     }
 
-    public function shell(): static
+    public function shell(): string
     {
         return $this->suggest('shell');
     }
 
-    public function git(): static
+    public function git(): string
     {
         return $this->suggest('git');
     }
 
-    public function gitCli(): static
+    public function gitCli(): string
     {
         return $this->suggest('gh');
     }
