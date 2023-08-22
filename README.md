@@ -39,6 +39,8 @@ return [
 ```
 ## Usage
 
+## [Github Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat)
+
 Run : 
 ```bash
 php artisan copilot:chat
@@ -56,6 +58,29 @@ then after auth you need to confirm that
     ┌ Do you entered the code successfully? ───────────────────────┐
         Yes / No 
     └──────────────────────────────────────────────────────────────┘
+```
+
+## Github Copilot CLI
+### [NodeJs Package](https://www.npmjs.com/package/@githubnext/github-copilot-cli)
+
+To use github-copilot-cli 
+
+A CLI experience for letting GitHub Copilot help you on the command line.
+
+NOTE: GitHub Copilot CLI is in technical preview. Expect rough corners and poorly supported platforms. To get access to GitHub Copilot CLI, sign up on the waitlist.
+
+GitHub Copilot CLI translates natural language into shell commands, with modes for different domains. After installation, you can use the following three command:
+
+```php
+use Elsayed85\CopilotChat\CopilotCli;
+
+$cli = new CopilotCli();
+$q = "install laravel";
+$cli = $cli->init();
+$cli->setQuestion($q);
+$a = $cli->shell()->getAnswer(); // you can use shell() or git() or gitCli()
+$explanation = $cli->explanation()->getAnswer();
+dd($a , $explanation);
 ```
 
 Then We Will Generate Copilot Token and it will be saved locally using cache for (30 min) and 
